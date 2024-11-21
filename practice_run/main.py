@@ -12,10 +12,13 @@ sky_image = pygame.image.load('pictures/Sky.png').convert_alpha() # Importing im
 ground_image = pygame.image.load('pictures/Ground.png').convert_alpha()
 text_surface = test_font.render('My game', False, 'Black') # Arguments are text info, alias, and color; Lets you costumize the text
 
-snail_surface = pygame.image.load('snail/snail1.png').convert_alpha()
+snail_surface = pygame.image.load('snail/snail1.png').convert_alpha() # convert_alpha helps imgs load faster
 snail_x_pos = 600 # Declare a variable for the X position to move Left or Right
+snail_rect = snail_surface.get_rect(bottomright = (snail_x_pos, 300))
 
-player_surf = pygame.image.load('pictures/')# Input surface of player
+player_surf = pygame.image.load('player/sonic_idle.png').convert_alpha() # Input surface of player
+sonic_surf = pygame.transform.scale(player_surf, (128, 150))
+player_rect = sonic_surf.get_rect(midbottom = (80, 312)) # Left, top, width, height
 
 # test_surface = pygame.Surface((100, 200)) # Display surface; It is always on
 # test_surface.fill('Red') # Fills test_surface varible with color Red
@@ -26,15 +29,29 @@ while True:
         if event.type == pygame.QUIT: 
             pygame.quit()
             exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print('mouse down')
 
     screen.blit(sky_image, (0, 0)) # Blit lets us place one surface onto the other; Uses X & Y
     screen.blit(ground_image, (0, 300))
     screen.blit(text_surface, (300, 50))
-    snail_x_pos -= 4
-    if snail_x_pos < -100: 
-        snail_x_pos = 800
-    screen.blit(snail_surface, (snail_x_pos, 250))
+    # snail_x_pos -= 4 # Condition if snail goes too far to the left
+    # if snail_x_pos < -100: 
+        # snail_x_pos = 800
+    snail_rect.x -= 4
+    if snail_rect.right <= 0: 
+        snail_rect.left = 800
+    screen.blit(snail_surface, snail_rect)
+    screen.blit(sonic_surf, player_rect)
+    print(sonic_surf)
+
+    #if player_rect.colliderect(snail_rect): # First character then check if it collides with second character; No = 0 Yes = 1
+        #print('collision')
     
+    mouse_pos = pygame.mouse.get_pos()
+    if player_rect.collidepoint(mouse_pos):
+        print(pygame.mouse.get_pressed())
+
     # draw all elements and updates everything
-    pygame.display.update() 
+    pygame.display.update()
     clock.tick(60) # Frame rate
