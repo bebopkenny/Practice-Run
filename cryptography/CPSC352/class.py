@@ -334,4 +334,8 @@ print("After: ", ipOut)
 # The original key
 originalKey = "0110000111011101101111011100001110100110101101001010111100101011"
 
+pc1Out = doTable(__pc1, originalKey)
+print("Original key: ", originalKey, " length: ", len(originalKey))
+print("pc1Out =", pc1Out, " length: ", len(pc1Out))
+
 
